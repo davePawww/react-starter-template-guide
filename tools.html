@@ -47,8 +47,8 @@
                         <span>bash</span>
                         <button onclick="copyCode(this)">Copy</button>
                     </div>
-                    <pre><code># Install Prettier
-pnpm add -D prettier</code></pre>
+                    <pre><code># Install Prettier and plugins
+pnpm add -D prettier prettier-plugin-tailwindcss</code></pre>
                 </div>
 
                 <h3>Create .prettierrc</h3>
@@ -63,8 +63,7 @@ pnpm add -D prettier</code></pre>
   "tabWidth": 2,
   "trailingComma": "es5",
   "printWidth": 100,
-  "bracketSpacing": true,
-  "jsxSingleQuote": false
+  "plugins": ["prettier-plugin-tailwindcss"]
 }</code></pre>
                 </div>
 
