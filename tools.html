@@ -47,7 +47,7 @@
                         <button onclick="copyCode(this)">Copy</button>
                     </div>
                     <pre><code># Install Prettier
-npm install -D prettier</code></pre>
+pnpm add -D prettier</code></pre>
                 </div>
 
                 <h3>Create .prettierrc</h3>
@@ -113,7 +113,7 @@ coverage
                         <button onclick="copyCode(this)">Copy</button>
                     </div>
                     <pre><code># Install ESLint and plugins
-npm install -D eslint @typescript-eslint/parser @typescript-eslint/eslint-plugin eslint-plugin-react eslint-plugin-react-hooks eslint-plugin-react-refresh</code></pre>
+pnpm add -D eslint @typescript-eslint/parser @typescript-eslint/eslint-plugin eslint-plugin-react eslint-plugin-react-hooks eslint-plugin-react-refresh</code></pre>
                 </div>
 
                 <h3>Create .eslintrc.cjs</h3>
@@ -168,10 +168,10 @@ npm install -D eslint @typescript-eslint/parser @typescript-eslint/eslint-plugin
                         <button onclick="copyCode(this)">Copy</button>
                     </div>
                     <pre><code># Install Husky
-npm install -D husky
+pnpm add -D husky
 
 # Initialize Husky
-npx husky init</code></pre>
+pnpm exec husky init</code></pre>
                 </div>
 
                 <h3>Update .husky/pre-commit</h3>
@@ -183,8 +183,8 @@ npx husky init</code></pre>
                     <pre><code>#!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
-npm run lint
-npm run format</code></pre>
+pnpm run lint
+pnpm run format</code></pre>
                 </div>
 
                 <h3>Update package.json</h3>
@@ -222,7 +222,7 @@ npm run format</code></pre>
                         <button onclick="copyCode(this)">Copy</button>
                     </div>
                     <pre><code># Initialize Storybook
-npx storybook@latest init</code></pre>
+pnpm dlx storybook@latest init</code></pre>
                 </div>
 
                 <p>Storybook will automatically detect your Vite + React project and configure itself.</p>
@@ -234,13 +234,13 @@ npx storybook@latest init</code></pre>
                         <button onclick="copyCode(this)">Copy</button>
                     </div>
                     <pre><code># Start Storybook (development)
-npm run storybook
+pnpm storybook
 
 # Build Storybook (static)
-npm run build-storybook
+pnpm build-storybook
 
 # Build and run Storybook locally
-npm run storybook-build-and-start</code></pre>
+pnpm storybook-build-and-start</code></pre>
                 </div>
 
                 <h3>Create a Component Story</h3>
