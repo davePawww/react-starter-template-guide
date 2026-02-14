@@ -26,7 +26,6 @@
                 <li><a href="#eslint">2. ESLint</a></li>
                 <li><a href="#husky">3. Husky</a></li>
                 <li><a href="#storybook">4. Storybook</a></li>
-                <li><a href="#vscode">VSCode Setup</a></li>
             </ul>
         </aside>
 
@@ -283,61 +282,6 @@ export const Outline: Story = {
     variant: 'outline',
     children: 'Button',
   },
-}</code></pre>
-                </div>
-            </section>
-
-            <section id="vscode">
-                <h2>VSCode Setup</h2>
-                <p>Configure VSCode to work seamlessly with all these tools.</p>
-
-                <h3>Recommended Extensions</h3>
-                <ul class="feature-list">
-                    <li><strong>ESLint</strong> - Linting integration</li>
-                    <li><strong>Prettier - Code formatter</strong> - Format on save</li>
-                    <li><strong>Tailwind CSS IntelliSense</strong> - Tailwind autocomplete</li>
-                    <li><strong>Storybook for VS Code</strong> - View stories in VSCode</li>
-                </ul>
-
-                <h3>VSCode Settings</h3>
-                <div class="code-block">
-                    <div class="code-header">
-                        <span>.vscode/settings.json</span>
-                        <button onclick="copyCode(this)">Copy</button>
-                    </div>
-                    <pre><code>{
-  "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "editor.formatOnSave": true,
-  "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": true,
-    "source.organizeImports": true
-  },
-  "eslint.validate": [
-    "typescript",
-    "typescriptreact"
-  ],
-  "[typescript]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  },
-  "[typescriptreact]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  }
-}</code></pre>
-                </div>
-
-                <h3>Recommended Workspace Extensions</h3>
-                <div class="code-block">
-                    <div class="code-header">
-                        <span>.vscode/extensions.json</span>
-                        <button onclick="copyCode(this)">Copy</button>
-                    </div>
-                    <pre><code>{
-  "recommendations": [
-    "dbaeumer.vscode-eslint",
-    "esbenp.prettier-vscode",
-    "bradlc.vscode-tailwindcss",
-    "ms-vscode.vscode-typescript-next"
-  ]
 }</code></pre>
                 </div>
             </section>
