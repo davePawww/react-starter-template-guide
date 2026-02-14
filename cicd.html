@@ -118,13 +118,12 @@ jobs:
         run: pnpm run test:run
 
       - name: Build project
-        run: pnpm run build</code>
+        run: pnpm run build</code></pre>
+                </div>
 
-      - name: Upload build artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: build
-          path: dist</code></pre>
+                <div class="info-box">
+                    <strong>💡 Note</strong>
+                    <p>The actual deployment to Vercel is handled by the separate <code>deploy.yml</code> workflow. This CI workflow runs all checks on every push and PR.</p>
                 </div>
 
                 <h3>What This Workflow Does</h3>
@@ -137,7 +136,6 @@ jobs:
                     <li><strong>Type Check</strong> - Runs TypeScript compiler to check types</li>
                     <li><strong>Tests</strong> - Runs Vitest tests to verify functionality</li>
                     <li><strong>Build</strong> - Creates production build</li>
-                    <li><strong>Upload</strong> - Saves build artifacts for potential deployment</li>
                 </ol>
             </section>
 
