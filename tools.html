@@ -114,45 +114,53 @@ coverage
                         <button onclick="copyCode(this)">Copy</button>
                     </div>
                     <pre><code># Install ESLint and plugins
-pnpm add -D eslint @typescript-eslint/parser @typescript-eslint/eslint-plugin eslint-plugin-react eslint-plugin-react-hooks eslint-plugin-react-refresh</code></pre>
+pnpm add -D @eslint/js typescript-eslint eslint-plugin-react eslint-plugin-react-hooks eslint-plugin-react-refresh</code></pre>
                 </div>
 
-                <h3>Create .eslintrc.cjs</h3>
+                <h3>Create eslint.config.js</h3>
                 <div class="code-block">
                     <div class="code-header">
-                        <span>.eslintrc.cjs</span>
+                        <span>eslint.config.js</span>
                         <button onclick="copyCode(this)">Copy</button>
                     </div>
-                    <pre><code>module.exports = {
-  root: true,
-  env: { browser: true, es2020: true },
-  extends: [
-    'eslint:recommended',
-    'plugin:@typescript-eslint/recommended',
-    'plugin:react/recommended',
-    'plugin:react/jsx-runtime',
-    'plugin:react-hooks/recommended',
-    'plugin:react-refresh/recommended',
-  ],
-  ignorePatterns: ['dist', '.eslintrc.cjs'],
-  parser: '@typescript-eslint/parser',
-  plugins: ['react-refresh'],
-  rules: {
-    'react-refresh/only-export-components': [
-      'warn',
-      { allowConstantExport: true },
-    ],
-    '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
-    '@typescript-eslint/no-explicit-any': 'warn',
-    'react-hooks/rules-of-hooks': 'error',
-    'react-hooks/exhaustive-deps': 'warn',
+                    <pre><code>import js from '@eslint/js'
+import tseslint from 'typescript-eslint'
+import react from 'eslint-plugin-react'
+import reactHooks from 'eslint-plugin-react-hooks'
+import reactRefresh from 'eslint-plugin-react-refresh'
+
+export default tseslint.config(
+  { ignores: ['dist'] },
+  {
+    extends: [js.configs.recommended, ...tseslint.configs.recommended],
+    files: ['**/*.{ts,tsx}'],
+    languageOptions: {
+      ecmaVersion: 2020,
+    },
+    plugins: {
+      react,
+      'react-hooks': reactHooks,
+      'react-refresh': reactRefresh,
+    },
+    rules: {
+      ...react.configs.recommended.rules,
+      ...reactHooks.configs.recommended.rules,
+      'react-refresh/only-export-components': [
+        'warn',
+        { allowConstantExport: true },
+      ],
+      '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
+      '@typescript-eslint/no-explicit-any': 'warn',
+      'react-hooks/rules-of-hooks': 'error',
+      'react-hooks/exhaustive-deps': 'warn',
+    },
   },
-}</code></pre>
+)</code></pre>
                 </div>
 
                 <div class="info-box">
-                    <strong>💡 VSCode Integration</strong>
-                    <p>Install the ESLint extension and add the settings in the VSCode Setup section below for automatic linting on save.</p>
+                    <strong>💡 Note</strong>
+                    <p>Make sure your <code>package.json</code> has <code>"type": "module"</code> or rename to <code>eslint.config.mjs</code>.</p>
                 </div>
             </section>
 
