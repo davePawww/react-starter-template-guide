@@ -114,6 +114,9 @@ jobs:
       - name: Run TypeScript type check
         run: pnpm exec tsc --noEmit
 
+      - name: Run tests
+        run: pnpm run test:run
+
       - name: Build project
         run: pnpm run build</code>
 
@@ -132,6 +135,7 @@ jobs:
                     <li><strong>Install</strong> - Runs pnpm install for reproducible installs</li>
                     <li><strong>Lint</strong> - Runs ESLint to check code quality</li>
                     <li><strong>Type Check</strong> - Runs TypeScript compiler to check types</li>
+                    <li><strong>Tests</strong> - Runs Vitest tests to verify functionality</li>
                     <li><strong>Build</strong> - Creates production build</li>
                     <li><strong>Upload</strong> - Saves build artifacts for potential deployment</li>
                 </ol>
