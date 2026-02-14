@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>React Starter Template Guide</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <div class="logo">⚡ React Starter Template</div>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="installation.html">Installation</a>
+            <a href="tools.html">Tools</a>
+            <a href="cicd.html">CI/CD</a>
+            <a href="deployment.html">Deployment</a>
+        </nav>
+    </header>
+
+    <main>
+        <aside class="sidebar">
+            <h3>Quick Links</h3>
+            <ul>
+                <li><a href="#prerequisites">Prerequisites</a></li>
+                <li><a href="#quickstart">Quick Start</a></li>
+                <li><a href="#whats-included">What's Included</a></li>
+                <li><a href="#next-steps">Next Steps</a></li>
+            </ul>
+        </aside>
+
+        <article class="content">
+            <section id="prerequisites">
+                <h1>React Starter Template Guide</h1>
+                <p class="lead">A complete step-by-step guide to building a production-ready React project with Vite, TypeScript, Tailwind, ShadCN, and more.</p>
+                
+                <div class="info-box">
+                    <strong>📋 Prerequisites</strong>
+                    <ul>
+                        <li>Node.js 18+ installed</li>
+                        <li>Git installed</li>
+                        <li>GitHub account</li>
+                        <li>VSCode (recommended)</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section id="quickstart">
+                <h2>Quick Start</h2>
+                <p>Get up and running in minutes:</p>
+                
+                <div class="code-block">
+                    <div class="code-header">
+                        <span>bash</span>
+                        <button onclick="copyCode(this)">Copy</button>
+                    </div>
+                    <pre><code># Clone or download this template
+gh repo create my-react-app --template your-username/react-starter-template
+
+# Navigate to project
+cd my-react-app
+
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev</code></pre>
+                </div>
+            </section>
+
+            <section id="whats-included">
+                <h2>What's Included</h2>
+                <div class="grid">
+                    <div class="card">
+                        <h3>🚀 Vite + React-TS</h3>
+                        <p>Lightning-fast build tool with TypeScript support</p>
+                    </div>
+                    <div class="card">
+                        <h3>🎨 Tailwind CSS</h3>
+                        <p>Utility-first CSS framework for rapid styling</p>
+                    </div>
+                    <div class="card">
+                        <h3>✨ ShadCN UI</h3>
+                        <p>Beautiful, accessible component library</p>
+                    </div>
+                    <div class="card">
+                        <h3>📝 Prettier</h3>
+                        <p>Code formatter for consistent style</p>
+                    </div>
+                    <div class="card">
+                        <h3>🔍 ESLint</h3>
+                        <p>Catch bugs and enforce code quality</p>
+                    </div>
+                    <div class="card">
+                        <h3>🐶 Husky</h3>
+                        <p>Git hooks for pre-commit checks</p>
+                    </div>
+                    <div class="card">
+                        <h3>📚 Storybook</h3>
+                        <p>Build components in isolation</p>
+                    </div>
+                    <div class="card">
+                        <h3>⚡ GitHub Actions</h3>
+                        <p>Automated CI/CD pipeline</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="next-steps">
+                <h2>Next Steps</h2>
+                <p>Follow the guides in order:</p>
+                <div class="steps">
+                    <div class="step">
+                        <span class="step-number">1</span>
+                        <div>
+                            <h4><a href="installation.html">Installation Guide</a></h4>
+                            <p>Set up Vite, React, TypeScript, and Tailwind</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">2</span>
+                        <div>
+                            <h4><a href="tools.html">Tools Configuration</a></h4>
+                            <p>Configure Prettier, ESLint, Husky, and Storybook</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">3</span>
+                        <div>
+                            <h4><a href="cicd.html">CI/CD Pipeline</a></h4>
+                            <p>Set up GitHub Actions for automated testing</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">4</span>
+                        <div>
+                            <h4><a href="deployment.html">Deployment</a></h4>
+                            <p>Deploy to Vercel or GitHub Pages</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </article>
+    </main>
+
+    <footer>
+        <p>Built for developers who want a production-ready React setup</p>
+    </footer>
+
+    <script>
+        function copyCode(button) {
+            const code = button.closest('.code-block').querySelector('code').textContent;
+            navigator.clipboard.writeText(code);
+            button.textContent = 'Copied!';
+            setTimeout(() => button.textContent = 'Copy', 2000);
+        }
+    </script>
+</body>
+</html>

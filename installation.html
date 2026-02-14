@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Installation - React Starter Template</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <div class="logo">⚡ React Starter Template</div>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="installation.html">Installation</a>
+            <a href="tools.html">Tools</a>
+            <a href="cicd.html">CI/CD</a>
+            <a href="deployment.html">Deployment</a>
+        </nav>
+    </header>
+
+    <main>
+        <aside class="sidebar">
+            <h3>On This Page</h3>
+            <ul>
+                <li><a href="#create-vite">1. Create Vite Project</a></li>
+                <li><a href="#install-tailwind">2. Install Tailwind CSS</a></li>
+                <li><a href="#install-shadcn">3. Install ShadCN UI</a></li>
+                <li><a href="#project-structure">Project Structure</a></li>
+                <li><a href="#verify">Verify Setup</a></li>
+            </ul>
+        </aside>
+
+        <article class="content">
+            <section id="create-vite">
+                <h1>Installation Guide</h1>
+                <p class="lead">Step-by-step instructions to set up your React project with Vite, TypeScript, and Tailwind CSS.</p>
+
+                <h2>Step 1: Create Vite + React TypeScript Project</h2>
+                <div class="why-box">
+                    <strong>Why Vite?</strong>
+                    <p>Vite provides instant server startup and lightning-fast Hot Module Replacement (HMR). It's significantly faster than Create React App and has native TypeScript support.</p>
+                </div>
+
+                <div class="code-block">
+                    <div class="code-header">
+                        <span>bash</span>
+                        <button onclick="copyCode(this)">Copy</button>
+                    </div>
+                    <pre><code># Create new project
+npm create vite@latest my-app -- --template react-ts
+
+# Navigate to project
+cd my-app
+
+# Install dependencies
+npm install</code></pre>
+                </div>
+
+                <div class="info-box">
+                    <strong>💡 Tip</strong>
+                    <p>Replace <code>my-app</code> with your desired project name.</p>
+                </div>
+            </section>
+
+            <section id="install-tailwind">
+                <h2>Step 2: Install Tailwind CSS</h2>
+                <div class="why-box">
+                    <strong>Why Tailwind CSS?</strong>
+                    <p>Tailwind is a utility-first CSS framework that enables rapid UI development. Instead of writing custom CSS, you use pre-built utility classes directly in your HTML/JSX. It also provides a consistent design system out of the box.</p>
+                </div>
+
+                <div class="code-block">
+                    <div class="code-header">
+                        <span>bash</span>
+                        <button onclick="copyCode(this)">Copy</button>
+                    </div>
+                    <pre><code># Install Tailwind and dependencies
+npm install -D tailwindcss postcss autoprefixer
+
+# Initialize Tailwind config
+npx tailwindcss init -p</code></pre>
+                </div>
+
+                <h3>Configure tailwind.config.js</h3>
+                <div class="code-block">
+                    <div class="code-header">
+                        <span>tailwind.config.js</span>
+                        <button onclick="copyCode(this)">Copy</button>
+                    </div>
+                    <pre><code>/** @type {import('tailwindcss').Config} */
+export default {
+  content: [
+    "./index.html",
+    "./src/**/*.{js,ts,jsx,tsx}",
+  ],
+  theme: {
+    extend: {},
+  },
+  plugins: [],
+}</code></pre>
+                </div>
+
+                <h3>Add Tailwind to CSS</h3>
+                <div class="code-block">
+                    <div class="code-header">
+                        <span>src/index.css</span>
+                        <button onclick="copyCode(this)">Copy</button>
+                    </div>
+                    <pre><code>@tailwind base;
+@tailwind components;
+@tailwind utilities;</code></pre>
+                </div>
+
+                <div class="warning-box">
+                    <strong>⚠️ Important</strong>
+                    <p>Make sure to add the Tailwind directives at the top of your index.css file. Delete any existing styles that might conflict.</p>
+                </div>
+            </section>
+
+            <section id="install-shadcn">
+                <h2>Step 3: Install ShadCN UI</h2>
+                <div class="why-box">
+                    <strong>Why ShadCN UI?</strong>
+                    <p>ShadCN UI provides professionally designed, accessible components that you fully own and can customize. Unlike traditional component libraries, the components are copied into your project, giving you complete control. Built on Radix UI primitives for full accessibility.</p>
+                </div>
+
+                <div class="code-block">
+                    <div class="code-header">
+                        <span>bash</span>
+                        <button onclick="copyCode(this)">Copy</button>
+                    </div>
+                    <pre><code># Initialize ShadCN in your project
+npx shadcn@latest init</code></pre>
+                </div>
+
+                <p>Follow the prompts. Recommended settings:</p>
+                <ul class="feature-list">
+                    <li>Style: <strong>Default</strong></li>
+                    <li>Base color: <strong>Slate</strong></li>
+                    <li>CSS variables: <strong>Yes</strong></li>
+                </ul>
+
+                <h3>Add Components</h3>
+                <div class="code-block">
+                    <div class="code-header">
+                        <span>bash</span>
+                        <button onclick="copyCode(this)">Copy</button>
+                    </div>
+                    <pre><code># Add common components
+npx shadcn@latest add button
+npx shadcn@latest add card
+npx shadcn@latest add input
+npx shadcn@latest add label
+npx shadcn@latest add accordion
+npx shadcn@latest add dialog
+npx shadcn@latest add dropdown-menu
+npx shadcn@latest add tabs</code></pre>
+                </div>
+
+                <div class="info-box">
+                    <strong>📋 Available Components</strong>
+                    <p>ShadCN offers 40+ components. Visit the <a href="https://ui.shadcn.com" target="_blank">official docs</a> to see all available components.</p>
+                </div>
+            </section>
+
+            <section id="project-structure">
+                <h2>Recommended Project Structure</h2>
+                <div class="code-block">
+                    <div class="code-header">
+                        <span>Structure</span>
+                        <button onclick="copyCode(this)">Copy</button>
+                    </div>
+                    <pre><code>src/
+├── components/
+│   ├── ui/                    # ShadCN components
+│   │   ├── button.tsx
+│   │   ├── card.tsx
+│   │   └── ...
+│   ├── layout/               # Layout components
+│   │   ├── Header.tsx
+│   │   └── Footer.tsx
+│   └── features/            # Feature-specific components
+│       └── ...
+├── lib/
+│   ├── utils.ts             # Utility functions
+│   └── axios.ts             # API clients
+├── hooks/                   # Custom React hooks
+├── types/                   # TypeScript types
+├── stories/                 # Storybook stories
+├── App.tsx
+├── main.tsx
+└── index.css</code></pre>
+                </div>
+            </section>
+
+            <section id="verify">
+                <h2>Verify Your Setup</h2>
+                <div class="code-block">
+                    <div class="code-header">
+                        <span>bash</span>
+                        <button onclick="copyCode(this)">Copy</button>
+                    </div>
+                    <pre><code># Start development server
+npm run dev
+
+# Open http://localhost:5173 in your browser</code></pre>
+                </div>
+
+                <div class="success-box">
+                    <strong>✅ Success!</strong>
+                    <p>You now have a working React + TypeScript + Tailwind + ShadCN project. Continue to the next guide to add Prettier, ESLint, Husky, and Storybook.</p>
+                </div>
+
+                <div class="nav-buttons">
+                    <a href="tools.html" class="btn btn-primary">Next: Configure Tools →</a>
+                </div>
+            </section>
+        </article>
+    </main>
+
+    <footer>
+        <p>Built for developers who want a production-ready React setup</p>
+    </footer>
+
+    <script>
+        function copyCode(button) {
+            const code = button.closest('.code-block').querySelector('code').textContent;
+            navigator.clipboard.writeText(code);
+            button.textContent = 'Copied!';
+            setTimeout(() => button.textContent = 'Copy', 2000);
+        }
+    </script>
+</body>
+</html>

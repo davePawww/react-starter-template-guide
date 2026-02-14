@@ -1,0 +1,10 @@
+{
+  "name": "react-starter-template-guide",
+  "version": "1.0.0",
+  "description": "Step-by-step guide for creating a React starter template",
+  "scripts": {
+    "build": "echo 'Static site - no build required'",
+    "dev": "echo 'Use a local server to preview'"
+  },
+  "devDependencies": {}
+}

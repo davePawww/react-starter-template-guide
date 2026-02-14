@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tools Configuration - React Starter Template</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <div class="logo">⚡ React Starter Template</div>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="installation.html">Installation</a>
+            <a href="tools.html">Tools</a>
+            <a href="cicd.html">CI/CD</a>
+            <a href="deployment.html">Deployment</a>
+        </nav>
+    </header>
+
+    <main>
+        <aside class="sidebar">
+            <h3>On This Page</h3>
+            <ul>
+                <li><a href="#prettier">1. Prettier</a></li>
+                <li><a href="#eslint">2. ESLint</a></li>
+                <li><a href="#husky">3. Husky</a></li>
+                <li><a href="#storybook">4. Storybook</a></li>
+                <li><a href="#vscode">VSCode Setup</a></li>
+            </ul>
+        </aside>
+
+        <article class="content">
+            <h1>Tools Configuration</h1>
+            <p class="lead">Set up Prettier, ESLint, Husky, and Storybook to enhance your development workflow.</p>
+
+            <section id="prettier">
+                <h2>1. Prettier - Code Formatter</h2>
+                <div class="why-box">
+                    <strong>Why Prettier?</strong>
+                    <p>Prettier enforces consistent code formatting across your entire team. It removes debates about tabs vs spaces, semicolons, and line lengths. Run it once and your code is formatted.</p>
+                </div>
+
+                <div class="code-block">
+                    <div class="code-header">
+                        <span>bash</span>
+                        <button onclick="copyCode(this)">Copy</button>
+                    </div>
+                    <pre><code># Install Prettier
+npm install -D prettier</code></pre>
+                </div>
+
+                <h3>Create .prettierrc</h3>
+                <div class="code-block">
+                    <div class="code-header">
+                        <span>.prettierrc</span>
+                        <button onclick="copyCode(this)">Copy</button>
+                    </div>
+                    <pre><code>{
+  "semi": false,
+  "singleQuote": true,
+  "tabWidth": 2,
+  "trailingComma": "es5",
+  "printWidth": 100,
+  "bracketSpacing": true,
+  "jsxSingleQuote": false
+}</code></pre>
+                </div>
+
+                <h3>Create .prettierignore</h3>
+                <div class="code-block">
+                    <div class="code-header">
+                        <span>.prettierignore</span>
+                        <button onclick="copyCode(this)">Copy</button>
+                    </div>
+                    <pre><code>node_modules
+dist
+build
+.cache
+.env
+.env.local
+coverage
+.vscode
+.idea</code></pre>
+                </div>
+
+                <h3>Add scripts to package.json</h3>
+                <div class="code-block">
+                    <div class="code-header">
+                        <span>package.json</span>
+                        <button onclick="copyCode(this)">Copy</button>
+                    </div>
+                    <pre><code>"scripts": {
+  "dev": "vite",
+  "build": "tsc && vite build",
+  "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+  "preview": "vite preview",
+  "format": "prettier --write ."
+}</code></pre>
+                </div>
+            </section>
+
+            <section id="eslint">
+                <h2>2. ESLint - Code Linter</h2>
+                <div class="why-box">
+                    <strong>Why ESLint?</strong>
+                    <p>ESLint statically analyzes your code to find problems like unused variables, missing types, and potential bugs. It enforces coding best practices and catches errors before they reach production.</p>
+                </div>
+
+                <div class="code-block">
+                    <div class="code-header">
+                        <span>bash</span>
+                        <button onclick="copyCode(this)">Copy</button>
+                    </div>
+                    <pre><code># Install ESLint and plugins
+npm install -D eslint @typescript-eslint/parser @typescript-eslint/eslint-plugin eslint-plugin-react eslint-plugin-react-hooks eslint-plugin-react-refresh</code></pre>
+                </div>
+
+                <h3>Create .eslintrc.cjs</h3>
+                <div class="code-block">
+                    <div class="code-header">
+                        <span>.eslintrc.cjs</span>
+                        <button onclick="copyCode(this)">Copy</button>
+                    </div>
+                    <pre><code>module.exports = {
+  root: true,
+  env: { browser: true, es2020: true },
+  extends: [
+    'eslint:recommended',
+    'plugin:@typescript-eslint/recommended',
+    'plugin:react/recommended',
+    'plugin:react/jsx-runtime',
+    'plugin:react-hooks/recommended',
+    'plugin:react-refresh/recommended',
+  ],
+  ignorePatterns: ['dist', '.eslintrc.cjs'],
+  parser: '@typescript-eslint/parser',
+  plugins: ['react-refresh'],
+  rules: {
+    'react-refresh/only-export-components': [
+      'warn',
+      { allowConstantExport: true },
+    ],
+    '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
+    '@typescript-eslint/no-explicit-any': 'warn',
+    'react-hooks/rules-of-hooks': 'error',
+    'react-hooks/exhaustive-deps': 'warn',
+  },
+}</code></pre>
+                </div>
+
+                <div class="info-box">
+                    <strong>💡 VSCode Integration</strong>
+                    <p>Install the ESLint extension and add the settings in the VSCode Setup section below for automatic linting on save.</p>
+                </div>
+            </section>
+
+            <section id="husky">
+                <h2>3. Husky - Git Hooks</h2>
+                <div class="why-box">
+                    <strong>Why Husky?</strong>
+                    <p>Husky enables you to run scripts before commits or pushes. This ensures no broken code or formatting issues ever enter your repository. It's your first line of defense against bugs.</p>
+                </div>
+
+                <div class="code-block">
+                    <div class="code-header">
+                        <span>bash</span>
+                        <button onclick="copyCode(this)">Copy</button>
+                    </div>
+                    <pre><code># Install Husky
+npm install -D husky
+
+# Initialize Husky
+npx husky init</code></pre>
+                </div>
+
+                <h3>Update .husky/pre-commit</h3>
+                <div class="code-block">
+                    <div class="code-header">
+                        <span>.husky/pre-commit</span>
+                        <button onclick="copyCode(this)">Copy</button>
+                    </div>
+                    <pre><code>#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+npm run lint
+npm run format</code></pre>
+                </div>
+
+                <h3>Update package.json</h3>
+                <div class="code-block">
+                    <div class="code-header">
+                        <span>package.json</span>
+                        <button onclick="copyCode(this)">Copy</button>
+                    </div>
+                    <pre><code>"scripts": {
+  "prepare": "husky"
+}</code></pre>
+                </div>
+
+                <div class="warning-box">
+                    <strong>⚠️ Important</strong>
+                    <p>Make the pre-commit script executable: <code>chmod +x .husky/pre-commit</code></p>
+                </div>
+
+                <div class="success-box">
+                    <strong>✅ How it works</strong>
+                    <p>Now every time you run <code>git commit</code>, Husky will automatically run ESLint and Prettier. If either fails, the commit is blocked until issues are fixed.</p>
+                </div>
+            </section>
+
+            <section id="storybook">
+                <h2>4. Storybook - Component Explorer</h2>
+                <div class="why-box">
+                    <strong>Why Storybook?</strong>
+                    <p>Storybook lets you build and test UI components in isolation. It's perfect for developing components before integrating them into your app, creating documentation, and doing visual regression testing.</p>
+                </div>
+
+                <div class="code-block">
+                    <div class="code-header">
+                        <span>bash</span>
+                        <button onclick="copyCode(this)">Copy</button>
+                    </div>
+                    <pre><code># Initialize Storybook
+npx storybook@latest init</code></pre>
+                </div>
+
+                <p>Storybook will automatically detect your Vite + React project and configure itself.</p>
+
+                <h3>Available Storybook Commands</h3>
+                <div class="code-block">
+                    <div class="code-header">
+                        <span>bash</span>
+                        <button onclick="copyCode(this)">Copy</button>
+                    </div>
+                    <pre><code># Start Storybook (development)
+npm run storybook
+
+# Build Storybook (static)
+npm run build-storybook
+
+# Build and run Storybook locally
+npm run storybook-build-and-start</code></pre>
+                </div>
+
+                <h3>Create a Component Story</h3>
+                <div class="code-block">
+                    <div class="code-header">
+                        <span>src/stories/Button.stories.tsx</span>
+                        <button onclick="copyCode(this)">Copy</button>
+                    </div>
+                    <pre><code>import type { Meta, StoryObj } from '@storybook/react'
+import { Button } from '../components/ui/button'
+
+const meta = {
+  title: 'UI/Button',
+  component: Button,
+  parameters: {
+    layout: 'centered',
+  },
+  tags: ['autodocs'],
+} satisfies Meta<typeof Button>
+
+export default meta
+type Story = StoryObj<typeof meta>
+
+export const Primary: Story = {
+  args: {
+    variant: 'default',
+    children: 'Button',
+  },
+}
+
+export const Secondary: Story = {
+  args: {
+    variant: 'secondary',
+    children: 'Button',
+  },
+}
+
+export const Outline: Story = {
+  args: {
+    variant: 'outline',
+    children: 'Button',
+  },
+}</code></pre>
+                </div>
+            </section>
+
+            <section id="vscode">
+                <h2>VSCode Setup</h2>
+                <p>Configure VSCode to work seamlessly with all these tools.</p>
+
+                <h3>Recommended Extensions</h3>
+                <ul class="feature-list">
+                    <li><strong>ESLint</strong> - Linting integration</li>
+                    <li><strong>Prettier - Code formatter</strong> - Format on save</li>
+                    <li><strong>Tailwind CSS IntelliSense</strong> - Tailwind autocomplete</li>
+                    <li><strong>Storybook for VS Code</strong> - View stories in VSCode</li>
+                </ul>
+
+                <h3>VSCode Settings</h3>
+                <div class="code-block">
+                    <div class="code-header">
+                        <span>.vscode/settings.json</span>
+                        <button onclick="copyCode(this)">Copy</button>
+                    </div>
+                    <pre><code>{
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true,
+    "source.organizeImports": true
+  },
+  "eslint.validate": [
+    "typescript",
+    "typescriptreact"
+  ],
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }
+}</code></pre>
+                </div>
+
+                <h3>Recommended Workspace Extensions</h3>
+                <div class="code-block">
+                    <div class="code-header">
+                        <span>.vscode/extensions.json</span>
+                        <button onclick="copyCode(this)">Copy</button>
+                    </div>
+                    <pre><code>{
+  "recommendations": [
+    "dbaeumer.vscode-eslint",
+    "esbenp.prettier-vscode",
+    "bradlc.vscode-tailwindcss",
+    "ms-vscode.vscode-typescript-next"
+  ]
+}</code></pre>
+                </div>
+            </section>
+
+            <section>
+                <div class="success-box">
+                    <strong>✅ All Tools Configured!</strong>
+                    <p>Your project now has professional-grade tooling. Continue to set up CI/CD with GitHub Actions.</p>
+                </div>
+
+                <div class="nav-buttons">
+                    <a href="cicd.html" class="btn btn-primary">Next: Set Up CI/CD →</a>
+                </div>
+            </section>
+        </article>
+    </main>
+
+    <footer>
+        <p>Built for developers who want a production-ready React setup</p>
+    </footer>
+
+    <script>
+        function copyCode(button) {
+            const code = button.closest('.code-block').querySelector('code').textContent;
+            navigator.clipboard.writeText(code);
+            button.textContent = 'Copied!';
+            setTimeout(() => button.textContent = 'Copy', 2000);
+        }
+    </script>
+</body>
+</html>
