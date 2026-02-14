@@ -22,47 +22,29 @@
         <aside class="sidebar">
             <h3>On This Page</h3>
             <ul>
-                <li><a href="#vercel-cli">Vercel CLI</a></li>
-                <li><a href="#vercel-git">Git Integration</a></li>
-                <li><a href="#vercel-cd">Automatic Deployment</a></li>
+                <li><a href="#vercel-setup">Vercel Setup</a></li>
+                <li><a href="#first-deploy">First Deploy</a></li>
+                <li><a href="#ci-cd">CI/CD</a></li>
             </ul>
         </aside>
 
         <article class="content">
             <h1>Deployment</h1>
-            <p class="lead">Deploy your React app to Vercel with automatic CI/CD.</p>
+            <p class="lead">Deploy your React app to Vercel.</p>
 
-            <section id="vercel-cli">
-                <h2>Deploy to Vercel</h2>
+            <section id="vercel-setup">
+                <h2>Vercel Setup</h2>
                 <div class="why-box">
                     <strong>Why Vercel?</strong>
-                    <p>Vercel offers the best developer experience for deploying Vite apps. It automatically detects your framework, optimizes builds, provides global CDN with automatic SSL, and offers instant rollbacks. Made by the creators of Vite!</p>
+                    <p>Vercel offers the best developer experience for deploying Vite apps. Zero-config, global CDN, automatic SSL, and instant rollbacks. Made by the creators of Vite!</p>
                 </div>
 
-                <h3>Method A: CLI Deployment</h3>
-                <div class="code-block">
-                    <div class="code-header">
-                        <span>bash</span>
-                        <button onclick="copyCode(this)">Copy</button>
-                    </div>
-                    <pre><code># Install Vercel CLI
-pnpm add -g vercel
-
-# Deploy
-vercel</code></pre>
-                </div>
-
-                <p>Follow the prompts - Vercel will automatically detect Vite and configure build settings.</p>
-            </section>
-
-            <section id="vercel-git">
-                <h3>Method B: Git Integration (Recommended)</h3>
+                <h3>Connect GitHub to Vercel</h3>
                 <ol class="steps-list">
-                    <li>Push your code to GitHub</li>
                     <li>Go to <a href="https://vercel.com" target="_blank">vercel.com</a> and sign up</li>
                     <li>Click <strong>Add New...</strong> → <strong>Project</strong></li>
                     <li>Import your GitHub repository</li>
-                    <li>Vercel automatically detects Vite - just click <strong>Deploy</strong></li>
+                    <li>Vercel auto-detects Vite settings - click <strong>Deploy</strong></li>
                 </ol>
 
                 <div class="info-box">
@@ -75,72 +57,31 @@ vercel</code></pre>
                 </div>
             </section>
 
-            <section id="vercel-cd">
-                <h2>Automatic Deployment with Vercel + GitHub Actions</h2>
-                <p>Deploy automatically to Vercel every time you push to main.</p>
+            <section id="first-deploy">
+                <h2>First Deploy</h2>
+                <p>After connecting your repo, Vercel will do an initial deploy. Once complete, your site is live!</p>
 
-                <h3>Step 1: Get Vercel Credentials</h3>
-                <ol class="steps-list">
-                    <li><strong>VERCEL_TOKEN:</strong> Create at <a href="https://vercel.com/account/tokens" target="_blank">vercel.com/account/tokens</a></li>
-                    <li><strong>VERCEL_ORG_ID:</strong> Run <code>pnpm exec vercel whoami --json</code></li>
-                    <li><strong>VERCEL_PROJECT_ID:</strong> Get from Vercel project settings</li>
-                </ol>
+                <div class="success-box">
+                    <strong>🎉 Your site is live!</strong>
+                    <p>Every push to main/master will now automatically deploy to Vercel after passing all checks.</p>
+                </div>
+            </section>
 
-                <h3>Step 2: Add Secrets to GitHub</h3>
-                <ol class="steps-list">
-                    <li>Go to your repo → <strong>Settings</strong> → <strong>Secrets and variables</strong> → <strong>Actions</strong></li>
-                    <li>Click <strong>New repository secret</strong></li>
-                    <li>Add <code>VERCEL_TOKEN</code></li>
-                    <li>Add <code>VERCEL_ORG_ID</code></li>
-                    <li>Add <code>VERCEL_PROJECT_ID</code></li>
-                </ol>
-
-                <h3>Step 3: Create Deploy Workflow</h3>
-                <div class="code-block">
-                    <div class="code-header">
-                        <span>.github/workflows/deploy.yml</span>
-                        <button onclick="copyCode(this)">Copy</button>
+            <section id="ci-cd">
+                <h2>How CI/CD Works</h2>
+                <div class="grid">
+                    <div class="card">
+                        <h3>🔄 On Pull Request</h3>
+                        <p>Runs linting, unit tests, E2E tests, and build. No deployment.</p>
                     </div>
-                    <pre><code>name: Deploy to Vercel
-
-on:
-  push:
-    branches: [main]
-  pull_request:
-    branches: [main]
-
-jobs:
-  build-and-deploy:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-          cache: 'pnpm'
-
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-
-      - name: Run linter
-        run: pnpm run lint
-
-      - name: Run tests
-        run: pnpm run test:run
-
-      - name: Build project
-        run: pnpm run build
-
-      - name: Deploy to Vercel
-        uses: amondnet/vercel-action@v25
-        with:
-          vercel-token: ${{ secrets.VERCEL_TOKEN }}
-          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
-          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
-          vercel-args: '--prod'</code></pre>
+                    <div class="card">
+                        <h3>🚀 On Push to Main</h3>
+                        <p>Runs all checks. If passing, automatically deploys to Vercel.</p>
+                    </div>
+                    <div class="card">
+                        <h3>🛡️ Quality Gates</h3>
+                        <p>Deployment is blocked if any check fails.</p>
+                    </div>
                 </div>
             </section>
 
@@ -155,7 +96,8 @@ jobs:
                         <li>✅ Prettier + ESLint</li>
                         <li>✅ Husky git hooks</li>
                         <li>✅ Storybook</li>
-                        <li>✅ Vitest + React Testing Library</li>
+                        <li>✅ Vitest (unit tests)</li>
+                        <li>✅ Playwright (E2E tests)</li>
                         <li>✅ GitHub Actions CI/CD</li>
                         <li>✅ Automatic Vercel deployment</li>
                     </ul>
@@ -174,7 +116,7 @@ jobs:
 
     <script>
         function copyCode(button) {
-            const code = button.closest('.code-block').querySelector('code').textContent;
+            const code = button.closest('.code-block').querySelector(code).textContent;
             navigator.clipboard.writeText(code);
             button.textContent = 'Copied!';
             setTimeout(() => button.textContent = 'Copy', 2000);

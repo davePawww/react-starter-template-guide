@@ -22,79 +22,39 @@
         <aside class="sidebar">
             <h3>On This Page</h3>
             <ul>
-                <li><a href="#what-is-cicd">What is CI/CD?</a></li>
-                <li><a href="#github-actions">GitHub Actions</a></li>
-                <li><a href="#workflow-file">Workflow File</a></li>
-                <li><a href="#run-workflow">Run Workflow</a></li>
+                <li><a href="#workflow">CI/CD Workflow</a></li>
+                <li><a href="#setup">Setup</a></li>
+                <li><a href="#vercel-secrets">Vercel Secrets</a></li>
             </ul>
         </aside>
 
         <article class="content">
             <h1>CI/CD Pipeline</h1>
-            <p class="lead">Set up automated testing and continuous integration with GitHub Actions.</p>
+            <p class="lead">Set up automated testing and deployment with GitHub Actions.</p>
 
-            <section id="what-is-cicd">
-                <h2>What is CI/CD?</h2>
+            <section id="workflow">
+                <h2>CI/CD Workflow</h2>
                 <div class="why-box">
-                    <strong>Why CI/CD Matters</strong>
-                    <p><strong>CI (Continuous Integration)</strong> automatically runs tests and checks every time you push code. <strong>CD (Continuous Deployment)</strong> automatically deploys your app when tests pass. This catches bugs early and ensures your app is always deployable.</p>
+                    <strong>Why This Setup?</strong>
+                    <p>This workflow runs all checks on every push and PR, but only deploys to Vercel when code is merged to main or master. It includes both unit tests (Vitest) and E2E tests (Playwright) for comprehensive coverage.</p>
                 </div>
-
-                <div class="grid">
-                    <div class="card">
-                        <h3>🔄 Continuous Integration</h3>
-                        <p>Automated tests run on every push. No more broken builds slipping through.</p>
-                    </div>
-                    <div class="card">
-                        <h3>🚀 Continuous Deployment</h3>
-                        <p>Automatic deployments to your hosting platform when tests pass.</p>
-                    </div>
-                    <div class="card">
-                        <h3>🛡️ Quality Gates</h3>
-                        <p>Code must pass linting, type checking, and tests before merging.</p>
-                    </div>
-                </div>
-            </section>
-
-            <section id="github-actions">
-                <h2>GitHub Actions</h2>
-                <div class="why-box">
-                    <strong>Why GitHub Actions?</strong>
-                    <p>GitHub Actions is built into GitHub, so you don't need any external services. It runs automated workflows on every push and pull request, making it perfect for CI/CD pipelines.</p>
-                </div>
-
-                <h3>Create Workflow Directory</h3>
-                <div class="code-block">
-                    <div class="code-header">
-                        <span>bash</span>
-                        <button onclick="copyCode(this)">Copy</button>
-                    </div>
-                    <pre><code># Create .github/workflows directory
-mkdir -p .github/workflows</code></pre>
-                </div>
-            </section>
-
-            <section id="workflow-file">
-                <h2>Create CI Workflow</h2>
-                <p>This workflow runs on every push and pull request to ensure code quality.</p>
 
                 <div class="code-block">
                     <div class="code-header">
-                        <span>.github/workflows/ci.yml</span>
+                        <span>.github/workflows/ci-cd.yml</span>
                         <button onclick="copyCode(this)">Copy</button>
                     </div>
-                    <pre><code>name: CI
+                    <pre><code>name: CI/CD
 
 on:
   push:
-    branches: [main]
+    branches: [main, master]
   pull_request:
-    branches: [main]
+    branches: [main, master]
 
 jobs:
   lint-and-test:
     runs-on: ubuntu-latest
-    
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -108,93 +68,92 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Run ESLint
+      - name: Install Playwright browsers
+        run: pnpm exec playwright install chromium
+
+      - name: Cache Playwright browsers
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
+          restore-keys: |
+            playwright-${{ runner.os }}-
+
+      - name: Run linter
         run: pnpm run lint
 
-      - name: Run TypeScript type check
-        run: pnpm exec tsc --noEmit
-
       - name: Run tests
-        run: pnpm run test:run
+        run: pnpm run test:ci
 
       - name: Build project
-        run: pnpm run build</code></pre>
-                </div>
+        run: pnpm run build
 
-                <div class="info-box">
-                    <strong>💡 Note</strong>
-                    <p>The actual deployment to Vercel is handled by the separate <code>deploy.yml</code> workflow. This CI workflow runs all checks on every push and PR.</p>
-                </div>
+  deploy:
+    needs: lint-and-test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-                <h3>What This Workflow Does</h3>
-                <ol class="steps-list">
-                    <li><strong>Triggers</strong> - Runs on push to main and on all pull requests</li>
-                    <li><strong>Checkout</strong> - Downloads your code</li>
-                    <li><strong>Setup Node</strong> - Installs Node.js 20 with pnpm caching</li>
-                    <li><strong>Install</strong> - Runs pnpm install for reproducible installs</li>
-                    <li><strong>Lint</strong> - Runs ESLint to check code quality</li>
-                    <li><strong>Type Check</strong> - Runs TypeScript compiler to check types</li>
-                    <li><strong>Tests</strong> - Runs Vitest tests to verify functionality</li>
-                    <li><strong>Build</strong> - Creates production build</li>
-                </ol>
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Pull Vercel Environment Information
+        run: pnpm exec vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
+
+      - name: Build Project Artifacts
+        run: pnpm exec vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
+
+      - name: Deploy Project Artifacts to Vercel
+        run: pnpm exec vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}</code></pre>
+                </div>
             </section>
 
-            <section id="run-workflow">
-                <h2>Running the Workflow</h2>
+            <section id="setup">
+                <h2>Setup</h2>
 
-                <h3>Step 1: Commit and Push</h3>
+                <h3>Create Workflow File</h3>
                 <div class="code-block">
                     <div class="code-header">
                         <span>bash</span>
                         <button onclick="copyCode(this)">Copy</button>
                     </div>
-                    <pre><code># Initialize git if not already done
-git init
-git add .
-git commit -m "Add CI/CD pipeline"
-
-# Create repository on GitHub and push
-gh repo create my-react-app --public --source=. --push
-# Or push to existing repo
-git push origin main</code></pre>
-                </div>
-
-                <h3>Step 2: View Workflow Runs</h3>
-                <ol class="steps-list">
-                    <li>Go to your repository on GitHub</li>
-                    <li>Click on the <strong>Actions</strong> tab</li>
-                    <li>You should see your CI workflow running</li>
-                    <li>Click on the workflow to see progress</li>
-                </ol>
-
-                <div class="info-box">
-                    <strong>💡 Pro Tips</strong>
-                    <ul>
-                        <li>Add <code>[skip ci]</code> to your commit message to skip CI for that push</li>
-                        <li>Branch protection rules can require CI to pass before merging</li>
-                        <li>You can add matrix strategies to test on multiple Node versions</li>
-                    </ul>
+                    <pre><code># Create .github/workflows directory
+mkdir -p .github/workflows</code></pre>
                 </div>
             </section>
 
-            <section id="branch-protection">
-                <h2>Add Branch Protection</h2>
-                <p>Require CI to pass before merging pull requests.</p>
-
+            <section id="vercel-secrets">
+                <h2>Add Vercel Secrets</h2>
                 <ol class="steps-list">
-                    <li>Go to <strong>Settings</strong> → <strong>Branches</strong></li>
-                    <li>Click <strong>Add branch protection rule</strong></li>
-                    <li>Branch name pattern: <code>main</code></li>
-                    <li>Check <strong>Require status checks to pass before merging</strong></li>
-                    <li>Select the <strong>lint-and-test</strong> job</li>
-                    <li>Click <strong>Save</strong></li>
+                    <li>Go to <a href="https://vercel.com/account/tokens" target="_blank">vercel.com/account/tokens</a></li>
+                    <li>Create a new token with <strong>Read & Write</strong> access</li>
+                    <li>Go to your repo → <strong>Settings</strong> → <strong>Secrets and variables</strong> → <strong>Actions</strong></li>
+                    <li>Click <strong>New repository secret</strong></li>
+                    <li>Add <code>VERCEL_TOKEN</code> with your token value</li>
                 </ol>
+
+                <div class="info-box">
+                    <strong>💡 Note</strong>
+                    <p>You don't need to add Vercel ORG_ID or PROJECT_ID as secrets - the workflow pulls this automatically from Vercel.</p>
+                </div>
             </section>
 
             <section>
                 <div class="success-box">
-                    <strong>✅ CI Pipeline Complete!</strong>
-                    <p>Your code will now be automatically tested on every push. Continue to set up automatic deployment to Vercel or GitHub Pages.</p>
+                    <strong>✅ How It Works</strong>
+                    <ul>
+                        <li><strong>On PR</strong>: Runs lint → tests → build (no deploy)</li>
+                        <li><strong>On push to main/master</strong>: Runs all checks + deploys to Vercel</li>
+                        <li><strong>If any check fails</strong>: Deployment is blocked</li>
+                    </ul>
                 </div>
 
                 <div class="nav-buttons">
