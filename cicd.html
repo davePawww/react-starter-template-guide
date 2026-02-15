@@ -90,9 +90,6 @@ jobs:
       - name: Run tests
         run: pnpm run test:all
 
-      - name: Build project
-        run: pnpm run build
-
   deploy:
     needs: lint-and-test
     runs-on: ubuntu-latest
