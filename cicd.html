@@ -59,6 +59,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -83,7 +88,7 @@ jobs:
         run: pnpm run lint
 
       - name: Run tests
-        run: pnpm run test:ci
+        run: pnpm run test:all
 
       - name: Build project
         run: pnpm run build
@@ -95,6 +100,11 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
