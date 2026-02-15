@@ -113,7 +113,7 @@ coverage
                         <button onclick="copyCode(this)">Copy</button>
                     </div>
                     <pre><code># Install ESLint and plugins
-pnpm add -D @eslint/js typescript-eslint eslint-plugin-react eslint-plugin-react-hooks eslint-plugin-react-refresh</code></pre>
+pnpm add -D @eslint/js typescript-eslint eslint-plugin-react eslint-plugin-react-hooks eslint-plugin-react-refresh eslint-config-prettier</code></pre>
                 </div>
 
                 <h3>Create eslint.config.js</h3>
@@ -127,11 +127,12 @@ import tseslint from 'typescript-eslint'
 import react from 'eslint-plugin-react'
 import reactHooks from 'eslint-plugin-react-hooks'
 import reactRefresh from 'eslint-plugin-react-refresh'
+import prettier from 'eslint-config-prettier'
 
 export default tseslint.config(
   { ignores: ['dist'] },
   {
-    extends: [js.configs.recommended, ...tseslint.configs.recommended],
+    extends: [js.configs.recommended, ...tseslint.configs.recommended, prettier],
     files: ['**/*.{ts,tsx}'],
     languageOptions: {
       ecmaVersion: 2020,
@@ -140,6 +141,11 @@ export default tseslint.config(
       react,
       'react-hooks': reactHooks,
       'react-refresh': reactRefresh,
+    },
+    settings: {
+      react: {
+        version: 'detect',
+      },
     },
     rules: {
       ...react.configs.recommended.rules,
@@ -159,8 +165,9 @@ export default tseslint.config(
 
                 <div class="info-box">
                     <strong>💡 Note</strong>
-                    <p>Make sure your <code>package.json</code> has <code>"type": "module"</code> or rename to <code>eslint.config.mjs</code>.</p>
+                    <p><code>eslint-config-prettier</code> is added at the end to disable formatting rules that conflict with Prettier.</p>
                 </div>
+
             </section>
 
             <section id="husky">
@@ -266,6 +273,47 @@ pnpm dlx storybook@latest init</code></pre>
 
                 <p>Storybook will automatically detect your Vite + React project and configure itself.</p>
 
+                <h3>Configure Tailwind CSS in Storybook</h3>
+                <div class="code-block">
+                    <div class="code-header">
+                        <span>.storybook/preview.ts</span>
+                        <button onclick="copyCode(this)">Copy</button>
+                    </div>
+                    <pre><code>import type { Preview } from '@storybook/react'
+import '../src/index.css'
+
+const preview: Preview = {
+  parameters: {
+    controls: {
+      matchers: {
+        color: /(background|color)$/i,
+        date: /Date$/i,
+      },
+    },
+  },
+}
+
+export default preview</code></pre>
+                </div>
+
+                <div class="info-box">
+                    <strong>💡 Why import index.css?</strong>
+                    <p>This ensures Tailwind v4 CSS-first styles are applied to components in Storybook.</p>
+                </div>
+
+                <h3>Optional: Add Storybook Addons</h3>
+                <div class="code-block">
+                    <div class="code-header">
+                        <span>bash</span>
+                        <button onclick="copyCode(this)">Copy</button>
+                    </div>
+                    <pre><code># Accessibility testing addon
+pnpm add -D @storybook/addon-a11y
+
+# Interaction testing addon
+pnpm add -D @storybook/addon-interactions</code></pre>
+                </div>
+
                 <h3>Available Storybook Commands</h3>
                 <div class="code-block">
                     <div class="code-header">
@@ -338,17 +386,17 @@ export const Outline: Story = {
                         <span>bash</span>
                         <button onclick="copyCode(this)">Copy</button>
                     </div>
-                    <pre><code># Install Vitest and React Testing Library
-pnpm add -D vitest @testing-library/react @testing-library/jest-dom jsdom</code></pre>
+                    <pre><code># Install Vitest, React Testing Library, and coverage
+pnpm add -D vitest @testing-library/react @testing-library/jest-dom jsdom @vitest/coverage-v8</code></pre>
                 </div>
 
-                <h3>Update vite.config.ts</h3>
+                <h3>Create vitest.config.ts</h3>
                 <div class="code-block">
                     <div class="code-header">
-                        <span>vite.config.ts</span>
+                        <span>vitest.config.ts</span>
                         <button onclick="copyCode(this)">Copy</button>
                     </div>
-                    <pre><code>import { defineConfig } from 'vite'
+                    <pre><code>import { defineConfig } from 'vitest/config'
 import react from '@vitejs/plugin-react'
 import path from 'path'
 
@@ -364,8 +412,23 @@ export default defineConfig({
     environment: 'jsdom',
     setupFiles: './src/test/setup.ts',
     include: ['src/**/*.{test,spec}.{js,ts,jsx,tsx}'],
+    coverage: {
+      provider: 'v8',
+      reporter: ['text', 'json', 'html'],
+      exclude: [
+        'node_modules/',
+        'src/test/',
+        '**/*.spec.ts',
+        '**/*.test.ts',
+      ],
+    },
   },
 })</code></pre>
+                </div>
+
+                <div class="info-box">
+                    <strong>💡 Why separate from vite.config.ts?</strong>
+                    <p>Vitest requires its own config to avoid conflicts with Vite's build plugins. This ensures Tailwind v4 continues to work properly when running tests.</p>
                 </div>
 
                 <h3>Create test setup file</h3>
@@ -385,9 +448,14 @@ export default defineConfig({
                     </div>
                     <pre><code>"scripts": {
   "test": "vitest",
-  "test:ui": "vitest --ui",
-  "test:coverage": "vitest --coverage",
-  "test:run": "vitest run"
+  "test:unit": "vitest run",
+  "test:unit:watch": "vitest",
+  "test:unit:ui": "vitest --ui",
+  "test:unit:coverage": "vitest run --coverage",
+  "test:e2e": "playwright test",
+  "test:e2e:ui": "playwright test --ui",
+  "test:e2e:headed": "playwright test --headed",
+  "test:all": "pnpm run test:unit && pnpm run test:e2e"
 }</code></pre>
                 </div>
 
@@ -429,8 +497,14 @@ describe('Button', () => {
                     <pre><code># Install Playwright
 pnpm add -D @playwright/test
 
-# Install browsers
+# Install Chromium (faster CI, smaller download)
 pnpm exec playwright install chromium</code></pre>
+                </div>
+
+                <div class="info-box">
+                    <strong>💡 Why only Chromium?</strong>
+                    <p>For faster CI/CD pipelines, we only install Chromium by default. Add <code>firefox</code> and <code>webkit</code> in playwright.config.ts if you need cross-browser testing:</p>
+                    <pre><code>pnpm exec playwright install firefox webkit</code></pre>
                 </div>
 
                 <h3>Create playwright.config.ts</h3>
@@ -451,6 +525,7 @@ export default defineConfig({
   use: {
     baseURL: 'http://localhost:5173',
     trace: 'on-first-retry',
+    screenshot: 'only-on-failure',
   },
   projects: [
     {
@@ -497,7 +572,8 @@ test('button click works', async ({ page }) => {
                     <pre><code>"scripts": {
   "test:e2e": "playwright test",
   "test:e2e:ui": "playwright test --ui",
-  "test:ci": "pnpm run test:run && pnpm run test:e2e"
+  "test:e2e:headed": "playwright test --headed",
+  "test:all": "pnpm run test:unit && pnpm run test:e2e"
 }</code></pre>
                 </div>
             </section>
