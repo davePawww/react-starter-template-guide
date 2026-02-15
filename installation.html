@@ -61,31 +61,6 @@ pnpm install</code></pre>
                     <strong>💡 Tip</strong>
                     <p>Replace <code>my-app</code> with your desired project name.</p>
                 </div>
-
-                <h3>Add "type": "module" to package.json</h3>
-                <div class="code-block">
-                    <div class="code-header">
-                        <span>package.json</span>
-                        <button onclick="copyCode(this)">Copy</button>
-                    </div>
-                    <pre><code>{
-  "name": "my-app",
-  "private": true,
-  "version": "0.0.0",
-  "type": "module",
-  "scripts": {
-    "dev": "vite",
-    "build": "tsc -b && vite build",
-    "lint": "eslint .",
-    "preview": "vite preview"
-  }
-}</code></pre>
-                </div>
-
-                <div class="info-box">
-                    <strong>💡 Why "type": "module"?</strong>
-                    <p>This enables ES modules in your project, allowing you to use <code>import/export</code> syntax and <code>eslint.config.js</code> (instead of eslint.config.mjs).</p>
-                </div>
             </section>
 
             <section id="install-tailwind">
