@@ -176,18 +176,31 @@ module.exports = {
 ### Step 6: Install & Configure Husky
 
 ```bash
+# Install Husky
 npm install -D husky
+
+# Install lint-staged and commitlint
+npm install -D lint-staged @commitlint/cli @commitlint/config-conventional
+
+# Initialize Husky
 npx husky init
 ```
 
-**Update `package.json` scripts:**
+**Update `package.json`:**
 
 ```json
 {
   "scripts": {
-    "prepare": "husky",
-    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "format": "prettier --write ."
+    "prepare": "husky"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{json,md,yml}": [
+      "prettier --write"
+    ]
   }
 }
 ```
@@ -195,11 +208,30 @@ npx husky init
 **Update `.husky/pre-commit`:**
 
 ```bash
-npm run lint
-npm run format
+npm run lint-staged
 ```
 
-**Why:** Husky runs checks before every commit, ensuring no bad code enters your repository. Never push broken code again.
+**Create `.husky/commit-msg`:**
+
+```bash
+npx --no -- commitlint --edit $1
+```
+
+**Create `commitlint.config.js`:**
+
+```javascript
+export default {
+  extends: ['@commitlint/config-conventional'],
+}
+```
+
+**Make hooks executable:**
+
+```bash
+chmod +x .husky/pre-commit .husky/commit-msg
+```
+
+**Why:** Husky runs checks before every commit. lint-staged only checks staged files (fast!), and commitlint enforces conventional commit messages like `feat: add new button`.
 
 ### Step 7: Install Storybook
 
