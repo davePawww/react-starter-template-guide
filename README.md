@@ -179,8 +179,8 @@ module.exports = {
 # Install Husky
 npm install -D husky
 
-# Install lint-staged
-npm install -D lint-staged
+# Install lint-staged and commitlint
+npm install -D lint-staged @commitlint/cli @commitlint/config-conventional
 
 # Initialize Husky
 npx husky init
@@ -201,6 +201,9 @@ npx husky init
     "*.{json,md,yml}": [
       "prettier --write"
     ]
+  },
+  "commitlint": {
+    "extends": ["@commitlint/config-conventional"]
   }
 }
 ```
@@ -211,13 +214,19 @@ npx husky init
 npm run lint-staged
 ```
 
+**Create `.husky/commit-msg`:**
+
+```bash
+npx --no -- commitlint --edit $1
+```
+
 **Make hooks executable:**
 
 ```bash
-chmod +x .husky/pre-commit
+chmod +x .husky/pre-commit .husky/commit-msg
 ```
 
-**Why:** Husky runs checks before every commit. lint-staged only checks staged files (fast!), skipping the entire codebase.
+**Why:** Husky runs checks before every commit. lint-staged only checks staged files (fast!), and commitlint enforces conventional commit messages like `feat: add new button`.
 
 ### Step 7: Install Storybook
 

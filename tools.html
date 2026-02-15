@@ -170,7 +170,7 @@ export default tseslint.config(
                     <p>Husky enables you to run scripts before commits or pushes. This ensures no broken code or formatting issues ever enter your repository. It's your first line of defense against bugs.</p>
                 </div>
 
-                <h3>Install Husky and lint-staged</h3>
+                <h3>Install Husky, lint-staged, and commitlint</h3>
                 <div class="code-block">
                     <div class="code-header">
                         <span>bash</span>
@@ -179,8 +179,8 @@ export default tseslint.config(
                     <pre><code># Install Husky
 pnpm add -D husky
 
-# Install lint-staged
-pnpm add -D lint-staged
+# Install lint-staged and commitlint
+pnpm add -D lint-staged @commitlint/cli @commitlint/config-conventional
 
 # Initialize Husky
 pnpm exec husky init</code></pre>
@@ -196,6 +196,18 @@ pnpm exec husky init</code></pre>
 . "$(dirname -- "$0")/_/husky.sh"
 
 pnpm run lint-staged</code></pre>
+                </div>
+
+                <h3>Create .husky/commit-msg</h3>
+                <div class="code-block">
+                    <div class="code-header">
+                        <span>.husky/commit-msg</span>
+                        <button onclick="copyCode(this)">Copy</button>
+                    </div>
+                    <pre><code>#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+npx --no -- commitlint --edit $1</code></pre>
                 </div>
 
                 <h3>Update package.json</h3>
@@ -215,17 +227,24 @@ pnpm run lint-staged</code></pre>
   "*.{json,md,yml}": [
     "prettier --write"
   ]
+},
+"commitlint": {
+  "extends": ["@commitlint/config-conventional"]
 }</code></pre>
                 </div>
 
                 <div class="warning-box">
                     <strong>⚠️ Important</strong>
-                    <p>Make the pre-commit script executable: <code>chmod +x .husky/pre-commit</code></p>
+                    <p>Make the hook scripts executable: <code>chmod +x .husky/pre-commit .husky/commit-msg</code></p>
                 </div>
 
                 <div class="success-box">
                     <strong>✅ How it works</strong>
-                    <p>Now every time you run <code>git commit</code>, Husky will run ESLint & Prettier only on staged files (fast!).</p>
+                    <p>Now every time you run <code>git commit</code>, Husky will:</p>
+                    <ul>
+                        <li><strong>pre-commit:</strong> Run ESLint & Prettier only on staged files (fast!)</li>
+                        <li><strong>commit-msg:</strong> Enforce conventional commit messages</li>
+                    </ul>
                 </div>
             </section>
 
