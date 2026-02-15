@@ -74,30 +74,26 @@ pnpm install</code></pre>
                         <span>bash</span>
                         <button onclick="copyCode(this)">Copy</button>
                     </div>
-                    <pre><code># Install Tailwind and dependencies
-pnpm add -D tailwindcss postcss autoprefixer
-
-# Initialize Tailwind config
-pnpm exec tailwindcss init -p</code></pre>
+                    <pre><code># Install Tailwind and Vite plugin
+pnpm add -D tailwindcss @tailwindcss/vite</code></pre>
                 </div>
 
-                <h3>Configure tailwind.config.js</h3>
+                <h3>Configure vite.config.ts</h3>
                 <div class="code-block">
                     <div class="code-header">
-                        <span>tailwind.config.js</span>
+                        <span>vite.config.ts</span>
                         <button onclick="copyCode(this)">Copy</button>
                     </div>
-                    <pre><code>/** @type {import('tailwindcss').Config} */
-export default {
-  content: [
-    "./index.html",
-    "./src/**/*.{js,ts,jsx,tsx}",
+                    <pre><code>import { defineConfig } from 'vite'
+import tailwindcss from '@tailwindcss/vite'
+import react from '@vitejs/plugin-react'
+
+export default defineConfig({
+  plugins: [
+    react(),
+    tailwindcss(),
   ],
-  theme: {
-    extend: {},
-  },
-  plugins: [],
-}</code></pre>
+})</code></pre>
                 </div>
 
                 <h3>Add Tailwind to CSS</h3>
@@ -106,14 +102,12 @@ export default {
                         <span>src/index.css</span>
                         <button onclick="copyCode(this)">Copy</button>
                     </div>
-                    <pre><code>@tailwind base;
-@tailwind components;
-@tailwind utilities;</code></pre>
+                    <pre><code>@import "tailwindcss";</code></pre>
                 </div>
 
-                <div class="warning-box">
-                    <strong>⚠️ Important</strong>
-                    <p>Make sure to add the Tailwind directives at the top of your index.css file. Delete any existing styles that might conflict.</p>
+                <div class="info-box">
+                    <strong>💡 Note</strong>
+                    <p>Tailwind v4 uses a CSS-first configuration. You can customize your theme using CSS variables directly in your CSS file.</p>
                 </div>
             </section>
 
